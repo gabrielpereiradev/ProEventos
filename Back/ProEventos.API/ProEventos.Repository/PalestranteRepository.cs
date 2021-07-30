@@ -18,7 +18,7 @@ namespace ProEventos.Repository
         public async Task<Palestrante[]> GetAllPalestrantesAsync(bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _dbContext.Palestrantes
-                 .Include(p => p.RedeSociais);
+                 .Include(p => p.RedesSociais);
             
             if(includeEventos)
             {
@@ -28,13 +28,13 @@ namespace ProEventos.Repository
             }
 
             query = query.OrderBy(p => p.Id);
-            return await query.ToArrayAsync();
+            return await query.AsNoTracking().ToArrayAsync();
         }
 
         public async Task<Palestrante[]> GetAllPalestrantesByNomeAsync(string nome, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _dbContext.Palestrantes
-                .Include(p => p.RedeSociais);
+                .Include(p => p.RedesSociais);
 
             if(includeEventos)
             {
@@ -46,13 +46,13 @@ namespace ProEventos.Repository
             query = query.OrderBy(e => e.Id)
                 .Where(p => p.Nome.ToLower().Contains(nome.ToLower()));
 
-            return await query.ToArrayAsync();
+            return await query.AsNoTracking().ToArrayAsync();
         }
 
         public async Task<Palestrante> GetPalestranteByIdAsync(int palestranteId, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _dbContext.Palestrantes
-                .Include(p => p.RedeSociais);
+                .Include(p => p.RedesSociais);
 
             if(includeEventos)
             {
@@ -63,7 +63,7 @@ namespace ProEventos.Repository
             query = query.OrderBy(e => e.Id)
                 .Where(p => p.Id == palestranteId);
 
-            return await query.FirstOrDefaultAsync();
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
     }

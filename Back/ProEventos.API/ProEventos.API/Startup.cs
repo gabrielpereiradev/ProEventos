@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProEventos.Application;
+using ProEventos.Application.Interface;
+using ProEventos.Repository;
+using ProEventos.Repository.Interface;
 using ProEventos.Repository.Persistence;
 
 namespace ProEventos.API
@@ -24,7 +28,18 @@ namespace ProEventos.API
             services.AddDbContext<ProEventosDbContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Sqlite"))    
             );
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(
+                    x => x.SerializerSettings.ReferenceLoopHandling = 
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
+            //INJEÇÃO DE DEPENDÊNCIAS
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IGeralRepository, GeralRepository>();
+            services.AddScoped<IEventoRepository, EventoRepository>();
+
+            services.AddScoped<IEventoService, EventoService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
