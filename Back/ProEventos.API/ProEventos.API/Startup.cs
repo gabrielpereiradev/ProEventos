@@ -10,6 +10,7 @@ using ProEventos.Application.Interface;
 using ProEventos.Repository;
 using ProEventos.Repository.Interface;
 using ProEventos.Repository.Persistence;
+using System;
 
 namespace ProEventos.API
 {
@@ -32,7 +33,11 @@ namespace ProEventos.API
                     .AddNewtonsoftJson(
                     x => x.SerializerSettings.ReferenceLoopHandling = 
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            );
+
+            services.AddCors();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //INJEÇÃO DE DEPENDÊNCIAS
             services.AddScoped<IEventoService, EventoService>();
@@ -61,6 +66,10 @@ namespace ProEventos.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x.AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {

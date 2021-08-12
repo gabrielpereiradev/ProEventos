@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProEventos.Domain
+namespace ProEventos.Application.DTOS
 {
-    public class Evento
+    public class EventoDto
     {
         public int Id { get; set; }
         public string Local { get; set; }
@@ -13,10 +13,10 @@ namespace ProEventos.Domain
         public string ImagemURL { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
-        public IEnumerable<Lote> Lotes { get; set; }
-        public IEnumerable<RedeSocial> RedesSociais { get; set; }
-
-        public IEnumerable<PalestranteEvento> PalestranteEventos { get; set; }
+        public IEnumerable<LoteDto> Lotes { get; set; }
+        public IEnumerable<RedeSocialDto> RedesSociais { get; set; }
+       
+        public IEnumerable<PalestranteDto> Palestrantes { get; set; }
 
     }
 }
